@@ -1,0 +1,30 @@
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<div id="app">
+    <!-- v-once não permite que seja atualizado esse trecho ainda que o elemento titulo 
+        tenha seu valor alterado posteriormente à inicialização da tela -->
+    <p v-once>{{ titulo }}</p>
+    <p>{{ saudacao() }}</p>
+    <a v-bind:href="link">Google</a>
+    <hr>
+
+    <!-- diretiva v-html insere um html dentro de uma tag html -->
+    <p v-html='linkHtml'></p>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            titulo: 'UsandoVue JS',
+            link: 'http://google.com',
+            linkHtml: '<a href="http://google.com">Google</a>'
+        },
+        methods: {
+            saudacao: function (event) {
+                this.titulo = 'Bom dia!';
+                return this.titulo;
+            }
+        }
+    })
+
+</script>

@@ -1,0 +1,48 @@
+<script src="http://unpkg.com/vue"></script>
+<div id="app">
+    <button title="hehe" v-on:click="aumentar"Aumentar></button>
+    <button title="hehe" v-on:click="contador2++"Aumentar></button>
+    <button v-on:click="diminuir"Diminuir></button>
+    <p>Contador: {{ contador }} Contador2: {{ contador2 }}</p>
+    <p>Resultado: {{ resultado }}</p>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            contador: 0,
+            contador2: 0,
+        },
+        // computed realiza a computação de um determinado valor já existente e pronto e retorna algo
+        computed: {
+            resultado() {
+                console.log('metodo computed resultado chamado');
+                return this.contador >= 5 ? 'Maior ou igual a 5' : 'Menor que 5';
+            }
+        },
+        // watch fica assistindo o comportamento de um determinado valor e é chamado a cada alteração
+        // realizada nele, recebendo o novo valor e o antigo como parâmetros por padrão
+        watch: {
+            contador(novoValor, antigoValor){
+                console.log(novoValor, antigoValor);
+                setTimeout (() => {
+                    this.contador = 0
+                }, 2000)
+            }
+        },
+        methods: {
+            aumentar(event) {
+                this.contador++;
+            },
+            diminuir(event) {
+                this.contador--;
+            },
+            // resultado(event) {
+            //     console.log('método resultado chamado');
+            //     return this.contador >= 5 ? 'Maior ou igual a 5' : 'Menor que 5';
+            // },
+        }
+    })
+
+</script>
