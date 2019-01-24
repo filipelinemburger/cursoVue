@@ -1,0 +1,53 @@
+<meta charset="UTF-8">
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app">
+
+    <template v-if='logado && !anonimo'>
+        <p>Usuário logado: {{ nome }}</p>
+        <p>Perfil: Admin</p>
+
+        Alterar nome de usuário: <input type="text" v-model='novoNome' 
+        v-on:keypress.enter='alterarNome()'>
+        <button @click='alterarNome()'>Alterar nome</button>
+
+    </template>
+    <p v-else-if='logado && anonimo'>Login realizado em modo anônimo</p>
+    <!-- a diretiva v-else só funciona se exatamente acima houver uma diretiva v-if -->
+    <p v-else>Nenhum usuário logado</p>
+    <hr>
+    <button @click='realizarLogin()'>{{ logado ? 'Sair' : 'Entrada' }}</button>
+    <input :style='[displayCheckbox]' type="checkbox" v-model='anonimo'>
+</div>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            nome: 'Maria',
+            novoNome: '',
+            logado: false,
+            anonimo: false
+        },
+        computed: {
+            displayCheckbox() {
+                return { display: this.logado ? 'inline' : 'none' }
+            }
+        },
+        methods: {
+            realizarLogin() {
+                this.logado = !this.logado
+                this.anonimo = false
+            },
+            alterarNome() {
+                debugger
+                if (this.novoNome.length < 3){
+                    alert('Quantidade de caracteres inválida para novo nome. Mínimo: 3 caracteres')
+                    return
+                }
+                this.nome = this.novoNome
+                this.novoNome = ''
+            }
+        }
+    })
+
+</script>
