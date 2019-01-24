@@ -8,11 +8,9 @@
     }
 </style>
 <div class='app' id="app" class="d-flex flex-row">
-
     <template v-if='logado && !anonimo'>
         <p>Usuário logado: {{ nome }}</p>
         <p>Perfil: Admin</p>
-        <hr>
         <div class="row">
             <div class="p-2">
                 <p>
@@ -33,16 +31,14 @@
             <div class="p-2">
                 <button class="btn btn-primary" @click='realizarLogin()'>{{ logado ? 'Sair' : 'Entrada' }}</button>
             </div>
-            <template v-show='logado'>
-                <div class="p-2">
-                    <p>
-                        Navegar em modo anônimo
-                    </p>
-                </div>
-                <div class="p-2">
-                    <input type="checkbox" v-model='anonimo'>
-                </div>
-            </template>
+            <div v-show='logado' class="p-2">
+                <p>
+                    Navegar em modo anônimo
+                </p>
+            </div>
+            <div v-show='logado' class="p-2">
+                <input type="checkbox" v-model='anonimo'>
+            </div>
         </div>
     </template>
     <div v-show='logado'>
@@ -54,6 +50,7 @@
 </div>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
     crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script>
     new Vue({
         el: '#app',
@@ -75,8 +72,11 @@
             },
             alterarNome() {
                 if (this.novoNome.length < 3) {
-                    alert('Quantidade de caracteres inválida para novo nome. Mínimo: 3 caracteres')
-                    return
+                    return Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Não é possível um novo nome com menos de 3 caracteres',
+                    })
                 }
                 this.nome = this.novoNome
                 this.novoNome = ''
