@@ -1,14 +1,11 @@
 <meta charset="UTF-8">
 <script src="https://unpkg.com/vue"></script>
-
 <div id="app">
-
     <template v-if='logado && !anonimo'>
         <p>Usuário logado: {{ nome }}</p>
         <p>Perfil: Admin</p>
 
-        Alterar nome de usuário: <input type="text" v-model='novoNome' 
-        v-on:keypress.enter='alterarNome()'>
+        Alterar nome de usuário: <input type="text" v-model='novoNome' v-on:keypress.enter='alterarNome()'>
         <button @click='alterarNome()'>Alterar nome</button>
 
     </template>
@@ -39,8 +36,7 @@
                 this.anonimo = false
             },
             alterarNome() {
-                debugger
-                if (this.novoNome.length < 3){
+                if (this.novoNome.length < 3) {
                     alert('Quantidade de caracteres inválida para novo nome. Mínimo: 3 caracteres')
                     return
                 }
@@ -49,5 +45,4 @@
             }
         }
     })
-
 </script>
