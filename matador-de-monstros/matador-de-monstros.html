@@ -1,60 +1,31 @@
 <meta charset="UTF-8">
 <script src="https://unpkg.com/vue"></script>
-<style>
-    #app {
-        margin-left: 5%;
-        margin-top: 3%;
-        margin-right: 10%;
-    }
-
-    .mensagemFinal {
-        margin-top: 5%;
-        text-align: center;
-    }
-
-    .barra-progresso {
-        height: 30px;
-        width: 500px;
-        border: 1px solid #000;
-    }
-
-    .btn-location {
-        justify-content: center;
-        margin-top: 5%;
-    }
-
-    .btn-space {
-        margin-right: 5px;
-    }
-
-    .center {
-        margin: auto;
-        width: 60%;
-        border: 3px solid #73AD21;
-        padding: 10px;
-        margin-top: 3%;
-    }
-
-    .log {
-        text-align: center;
-        border: 1px solid #000;
-    }
-</style>
+<link rel="stylesheet" href="styles.css">
 <div class='app' id="app" class="d-flex flex-row">
     <div class="row">
         <div class="col-sm-6">
-            Jogador ({{lifeJogador}}%)
+            <div class="row" style='justify-content: center;'>
+                <h2 >Jogador</h2>
+            </div> 
             <div class='barra-progresso'>
                 <div :style='lifeJogadorStyle'>
                 </div>
             </div>
+            <div class="row" style='justify-content: center;'>
+               <h5>{{lifeJogador}}%</h5> 
+            </div> 
         </div>
         <div class="col-sm-6">
-            Monstro ({{lifeMonstro}}%)
+            <div class="row" style='justify-content: center;'>
+                <h2 >Jogador</h2>
+            </div>
             <div class='barra-progresso'>
                 <div :style='lifeMonstroStyle'>
                 </div>
             </div>
+            <div class="row" style='justify-content: center;'>
+                <h5>{{lifeMonstro}}%</h5> 
+             </div>
         </div>
     </div>
     <div class="row, mensagemFinal">
@@ -62,11 +33,10 @@
     </div>
     <hr>
     <div class="row btn-location" v-show='jogoIniciado'>
-        <button class="btn btn-warning btn-space" v-show='lifeJogador > 0 && lifeMonstro > 0' @click='ataque()'>Ataque</button>
-        <button class="btn btn-danger btn-space" v-show='lifeJogador > 0 && lifeMonstro > 0' @click='ataqueEspecial()'>Ataque
-            Especial</button>
-        <button class="btn btn-success btn-space" v-show='lifeJogador > 0 && lifeMonstro > 0' @click='curar()'>Curar</button>
-        <button class="btn btn-dark btn-space" @click='desistir()' v-show='lifeJogador > 0 && lifeMonstro > 0'>Desistir</button>
+        <button class="btn btn-warning btn-space" :disabled='!habilitarBotoes' @click='ataque()'>Ataque</button>
+        <button class="btn btn-danger btn-space" :disabled='!habilitarBotoes' @click='ataqueEspecial()'>Ataque Especial</button>
+        <button class="btn btn-success btn-space" :disabled='!habilitarBotoes' @click='curar()'>Curar</button>
+        <button class="btn btn-dark btn-space" :disabled='!habilitarBotoes' @click='desistir()' v-show='lifeJogador > 0 && lifeMonstro > 0'>Desistir</button>
         <button class="btn btn-info" @click='recomecarJogo()'>Recomeçar jogo</button>
     </div>
     <div class="row btn-location" v-show='!jogoIniciado'>
@@ -85,117 +55,4 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
     crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script>
-    new Vue({
-        el: '#app',
-        data: {
-            lifeJogador: 100,
-            lifeMonstro: 100,
-            jogoIniciado: false,
-            mensagemFinal: '',
-            logDeJogadas: '',
-            styleJogador: {
-                width: '200px',
-                height: '200px',
-            },
-        },
-        computed: {
-            lifeJogadorStyle() {
-
-                return {
-                    backgroundColor: this.lifeJogador > 20 ? 'green' : 'red',
-                    width: `${this.lifeJogador}%`,
-                    height: '100%',
-                }
-            },
-            lifeMonstroStyle() {
-                return {
-                    backgroundColor: this.lifeMonstro > 20 ? 'green' : 'red',
-                    width: `${this.lifeMonstro}%`,
-                    height: '100%',
-                }
-            }
-        },
-        methods: {
-            curar() {
-                let pontos = Math.floor(Math.random() * (10 - 6 + 1) + 6);
-                this.lifeJogador += pontos
-                this.adicionarLogDeJogada('JOGADOR', 'MONSTRO', 'CURAR', pontos)
-                pontos = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-                this.lifeJogador -= pontos
-                this.adicionarLogDeJogada('MONSTRO', 'JOGADOR', 'ATAQUE', pontos)
-                if (this.lifeJogador > 100)
-                    this.lifeJogador = 100
-                this.validaTerminoDePartida()
-            },
-            desistir() {
-                this.jogoIniciado = false;
-                this.recomecarJogo()
-                return Swal.fire({
-                    type: 'error',
-                    title: 'd-.-b',
-                    text: 'Você desistiu e o monstro venceu o jogo',
-                })
-            },
-            ataqueEspecial() {
-                let forcaDoAtaque = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-                this.lifeJogador -= forcaDoAtaque
-                this.adicionarLogDeJogada('MONSTRO', 'JOGADOR', 'ATAQUE', forcaDoAtaque)
-                forcaDoAtaque = Math.floor(Math.random() * (10 - 7 + 1) + 7);
-                this.lifeMonstro -= forcaDoAtaque
-                this.adicionarLogDeJogada('JOGADOR', 'MONSTRO', 'ATAQUE', forcaDoAtaque)
-                this.validaTerminoDePartida()
-            },
-            ataque() {
-                let forcaDoAtaque = Math.floor(Math.random() * (10 - 8 + 1) + 8);
-                this.lifeJogador -= forcaDoAtaque
-                this.adicionarLogDeJogada('MONSTRO', 'JOGADOR', 'ATAQUE', forcaDoAtaque)
-
-                forcaDoAtaque = Math.floor(Math.random() * (10 - 5 + 1) + 5);
-                this.lifeMonstro -= forcaDoAtaque
-                this.adicionarLogDeJogada('JOGADOR', 'MONSTRO', 'ATAQUE', forcaDoAtaque)
-                this.validaTerminoDePartida()
-            },
-            recomecarJogo() {
-                this.lifeJogador = 100;
-                this.lifeMonstro = 100;
-                this.logDeJogadas = ''
-                this.mensagemFinal = ''
-            },
-            validaTerminoDePartida(){
-                if (this.lifeJogador <= 0 && this.lifeMonstro > 0) {
-                    this.lifeJogador = 0;
-                    this.mensagemFinal = 'Você perdeu!'
-                    return Swal.fire({
-                        type: 'error',
-                        title: '-.-',
-                        text: 'Você perdeu!',
-                    })
-                } else if (this.lifeMonstro <= 0 && this.lifeJogador > 0) {
-                    this.lifeMonstro = 0;
-                    return Swal.fire({
-                        type: 'success',
-                        title: 'Yeahh!!!!',
-                        text: 'Você derrotou o monstro! Parabéns!',
-                    })
-                } else if (this.lifeMonstro <= 0 && this.lifeJogador <= 0) {
-                    this.lifeJogador = 0;
-                    this.lifeMonstro = 0;
-                    this.mensagemFinal = 'A disputa terminou empatada!'
-                    return Swal.fire({
-                        type: 'warning',
-                        text: 'A disputa terminou empatada!',
-                    })
-                }
-            },
-            adicionarLogDeJogada(atacante, atacado, tipoJogada, forcaDoAtaque) {
-                if (tipoJogada == 'CURAR') {
-                    this.logDeJogadas = '<p class="log">' + atacante + ' RECUPEROU ' + forcaDoAtaque + '</p>' + this.logDeJogadas
-                } else {
-                    this.logDeJogadas = '<p class="log">' + atacante + ' ATINGIU O ' + atacado + ' COM ' + forcaDoAtaque + '</p>' + this.logDeJogadas
-                }
-            }
-        }
-    })
-
-</script>
+<script src="app.js"></script>
