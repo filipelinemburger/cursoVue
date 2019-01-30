@@ -1,0 +1,69 @@
+<meta charset="UTF-8">
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app">
+    <ul>
+        <li v-for='(cor, i) in cores'> {{ i+1 }}: {{ cor }} </li>
+    </ul>
+
+    <input type="text" v-model='novaCor'>
+    <button @click='novaCor.length > 0 ? cores.push(novaCor) : chamarAlerta()'>Adicionar cor</button>
+
+    <div v-for='(cor, i) in cores'>
+        <h1>{{ cor }}</h1>
+        <p>{{ i }}</p>
+    </div>
+    <ul>
+        <li v-for='pessoa in pessoas'>
+            <p>
+                Nome: {{ pessoa.nome }}
+            </p>
+            <P>
+                Idade: {{ pessoa.idade}}
+            </P>
+            <p>
+                Peso: {{ pessoa.peso }}
+            </p>
+
+        </li>
+    </ul>
+    <hr>
+
+    <div v-for='n in 10'>{{n}}</div>
+
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            novaCor: '',
+            cores: ['vermelho', 'verde', 'azul', 'amarelo', 'preto', 'branco'],
+            pessoas: [
+                { nome: 'Filipe', idade: 29, peso: 90 },
+                { nome: 'Rafaela', idade: 29, peso: 54 },
+                { nome: 'Bruna', idade: 24, peso: 50 },
+                { nome: 'Beto', idade: 24, peso: 73 },
+            ]
+        },
+        methods: {
+            chamarAlerta() {
+                return Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Campo de nova cor está vazio',
+                })
+            }
+        }
+    })
+</script>
+<style>
+    h1 {
+        display: inline;
+    }
+
+    p {
+        display: inline;
+    }
+</style>
