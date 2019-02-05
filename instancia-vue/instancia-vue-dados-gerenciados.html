@@ -1,0 +1,22 @@
+<meta charset="UTF-8">
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app">
+    {{titulo}}
+    <button @click='alterar'>Adicionar exclamação</button>
+</div>
+
+<script>
+    const vm1 = new Vue({
+        el: '#app',
+        data: {
+            titulo: 'Teste 1'
+        },
+        methods: {
+            alterar() {
+                this.titulo += '!'
+            }
+        }
+    })
+
+</script>

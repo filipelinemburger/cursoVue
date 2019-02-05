@@ -1,0 +1,42 @@
+<meta charset="UTF-8">
+<script src="https://unpkg.com/vue"></script>
+
+
+<div id="app1">
+    {{titulo1}}
+    <button @click='alterar'>Adicionar exclamação</button>
+</div>
+<div id="app2">
+    {{titulo2}}
+    <button @click='alterar'>Adicionar exclamação</button>
+</div>
+
+<script>
+    const vm1 = new Vue({
+        el: '#app1',
+        data: {
+            titulo1: 'Título 1'
+        },
+        methods: {
+            alterar() {
+                vm2.titulo2 += '?'
+            }
+        }
+    })
+
+    const vm2 = new Vue({
+        el: '#app2',
+        data: {
+            titulo2: 'Título 2'
+        },
+        methods: {
+            alterar() {
+                vm1.titulo1 += '!'
+            }
+        }
+    })
+
+    setTimeout(() => {
+        vm1.titulo1 = 'Alterado pelo setTimeOut'
+    }, 2000);
+</script>
